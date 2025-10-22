@@ -8,7 +8,8 @@ from typing import List, Optional, Dict, Any
 from pathlib import Path
 import requests
 from fastapi import FastAPI, BackgroundTasks, HTTPException
-from pydantic import BaseModel, Field, HttpUrl, BaseSettings
+from pydantic import BaseModel, Field, HttpUrl
+from pydantic_settings import BaseSettings
 
 # ================== CONFIG ==================
 class Settings(BaseSettings):
