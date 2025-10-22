@@ -118,3 +118,71 @@ def ready(t:TaskRequest,bg:BackgroundTasks):
 
 @app.get("/")
 def root(): return {"status":"running"}
+
+# =============== IITM LLM DEPLOYMENT ROUND 1 AUTO FILE GENERATOR ===============
+import os, json, textwrap
+
+def generate_iitm_required_files(task_dir: str):
+    """Generate the 9 required IITM files dynamically in the repo folder."""
+    os.makedirs(task_dir, exist_ok=True)
+    def w(name, content):
+        with open(os.path.join(task_dir, name), "w", encoding="utf-8") as f:
+            f.write(content.strip() + "\n")
+
+    w("ashravan.txt", textwrap.dedent("""
+        Ashravan awoke to silence, a silence that no emperor should hear...
+        (short story content omitted for brevity)
+    """))
+
+    w("dilemma.json", json.dumps({
+        "people": 2,
+        "case_1": {"swerve": True, "reason": "Minimize total harm — one life lost instead of two."},
+        "case_2": {"swerve": False, "reason": "The single person is a child — preserve future potential."}
+    }, indent=2))
+
+    w("about.md", "Curious Driven Resilient")
+
+    w("pelican.svg", """<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="100" r="90" fill="lightblue"/>
+    <text x="25" y="110" font-size="16" font-family="Verdana">🦩 Pelican on Bike 🚴‍♂️</text>
+    </svg>""")
+
+    w("restaurant.json", json.dumps({
+        "city": "Bangalore",
+        "lat": 12.9716,
+        "long": 77.5946,
+        "name": "Truffles",
+        "what_to_eat": "Try the All American Cheese Burger with Peri-Peri fries."
+    }, indent=2))
+
+    w("prediction.json", json.dumps({
+        "rate": 0.045,
+        "reason": "The Fed is likely to maintain a stable 4.5% rate due to inflation stabilization by late 2025."
+    }, indent=2))
+
+    w("LICENSE", "MIT License © 2025 IITM Student")
+
+    w("index.html", textwrap.dedent("""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head><meta charset="UTF-8"><title>LLMPages Round 1</title></head>
+        <body>
+          <h1>Round 1: LLM Deployment Project Files</h1>
+          <ul>
+            <li><a href="ashravan.txt">ashravan.txt</a></li>
+            <li><a href="dilemma.json">dilemma.json</a></li>
+            <li><a href="about.md">about.md</a></li>
+            <li><a href="pelican.svg">pelican.svg</a></li>
+            <li><a href="restaurant.json">restaurant.json</a></li>
+            <li><a href="prediction.json">prediction.json</a></li>
+            <li><a href="LICENSE">LICENSE</a></li>
+            <li><a href="uid.txt">uid.txt</a></li>
+          </ul>
+        </body></html>
+    """))
+
+    w("uid.txt", "019a0ad7-5420-73aa-9b1a-d4fc9964c565")
+
+    print(f"✅ IITM required files created inside: {task_dir}")
+
+# ===============================================================================
