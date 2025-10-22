@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200">
+  <rect width="100%" height="100%" fill="skyblue"/>
+  <circle cx="150" cy="100" r="40" fill="white" stroke="black" stroke-width="2"/>
+  <polygon points="130,110 170,110 150,160" fill="orange"/>
+  <circle cx="150" cy="60" r="20" fill="white"/>
+  <circle cx="160" cy="55" r="5" fill="black"/>
+  <rect x="90" y="160" width="120" height="10" fill="black"/>
+  <circle cx="100" cy="175" r="10" fill="gray"/>
+  <circle cx="200" cy="175" r="10" fill="gray"/>
+</svg>
