@@ -186,3 +186,50 @@ def generate_iitm_required_files(task_dir: str):
     print(f"✅ IITM required files created inside: {task_dir}")
 
 # ===============================================================================
+
+# ========================= ISOLATED REPO CREATION PATCH ==========================
+import subprocess, json, shutil
+
+def create_new_github_repo(task_name: str, files_dir: str):
+    """
+    Creates a brand-new GitHub repo for each IITM task dynamically.
+    Pushes required files and enables GitHub Pages.
+    """
+    print(f"🚀 Creating isolated repo for task: {task_name}")
+
+    # --- Step 1: Create new repo using GitHub API ---
+    repo_api = f"https://api.github.com/user/repos"
+    payload = {"name": task_name, "private": False, "auto_init": False}
+    headers = {"Authorization": f"token {os.getenv('GITHUB_TOKEN')}",
+               "Accept": "application/vnd.github+json"}
+
+    response = requests.post(repo_api, headers=headers, data=json.dumps(payload))
+    if response.status_code not in [200, 201]:
+        print(f"❌ Failed to create repo: {response.text}")
+        return None
+    print(f"✅ Repo created successfully: https://github.com/{GITHUB_USERNAME}/{task_name}")
+
+    # --- Step 2: Initialize local git and push ---
+    os.chdir(files_dir)
+    subprocess.run(["git", "init"], check=True)
+    subprocess.run(["git", "branch", "-M", "main"], check=True)
+    subprocess.run(["git", "add", "."], check=True)
+    subprocess.run(["git", "commit", "-m", f"Add IITM Round 1 required files"], check=True)
+    subprocess.run(["git", "remote", "add", "origin",
+                    f"https://github.com/{GITHUB_USERNAME}/{task_name}.git"], check=True)
+    subprocess.run(["git", "push", "-u", "origin", "main"], check=True)
+    print("✅ Files pushed successfully")
+
+    # --- Step 3: Enable GitHub Pages ---
+    enable_pages_api = f"https://api.github.com/repos/{GITHUB_USERNAME}/{task_name}/pages"
+    pages_payload = {"source": {"branch": "main", "path": "/"}}
+    res = requests.post(enable_pages_api, headers=headers, data=json.dumps(pages_payload))
+    if res.status_code in [201, 204]:
+        print("✅ GitHub Pages enabled successfully")
+    else:
+        print(f"⚠️ GitHub Pages enabling failed: {res.text}")
+
+    os.chdir("..")
+    return f"https://{GITHUB_USERNAME}.github.io/{task_name}/"
+# ===============================================================================
+
